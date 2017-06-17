@@ -1,0 +1,65 @@
+#********************************************************
+# 6/13/17
+# (Dataquest - Guided Project: Exploring Gun Deaths in US)
+# Justin M. Campbell, justinsouper@gmail.com
+# Purpose: To practice working with csv files and
+# cleaning lists of lists for analyses
+#********************************************************
+
+# In[1]: Introducing US Gun Deaths Data
+import csv
+f = open('/Users/justincampbell/Library/Mobile Documents/com~apple~CloudDocs/Code/Dataquest/Data/full_data.csv','r')
+dataset = csv.reader(f)
+data = list(dataset)
+data[0:5]
+
+# In[2]: Removing Headers From a List of Lists
+headers = data[0]
+data = data[1:]
+data[0:5] # confirm removal
+
+# In[3]: Counting Gun Deaths By Year
+years = [x[1] for x in data]
+year_counts = {}
+for year in years:
+    if year not in year_counts:
+        year_counts[year] = 1
+    else:
+        year_counts[year] += 1
+
+year_counts
+
+# In[4]: Exploring Gun Deaths By Month and Year
+import time
+import datetime
+
+dates = [datetime.datetime(year=int(x[1]), month=int(x[2]), day=1) for x in data]
+dates[0:5] # check
+date_counts = {}
+for date in dates:
+    if date not in date_counts:
+        date_counts[date] = 1
+    else:
+        date_counts[date] += 1
+
+date_counts
+
+# In[5]: Exploring Gun Deaths By Race and Sex
+sexes = [x[5] for x in data]
+sex_counts = {}
+for sex in sexes:
+    if sex not in sex_counts:
+        sex_counts[sex] = 1
+    else:
+        sex_counts[sex] += 1
+
+races = [x[7] for x in data]
+race_counts = {}
+for race in races:
+    if race not in race_counts:
+        race_counts[race] = 1
+    else:
+        race_counts[race] += 1
+
+sex_counts
+race_counts

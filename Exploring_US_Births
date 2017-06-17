@@ -1,0 +1,81 @@
+#********************************************************
+# 6/13/17
+# (Dataquest - Guided Project: Exploring US Births)
+# Justin M. Campbell, justinsouper@gmail.com
+# Purpose: To practice exploring a dataset, creating
+# functions, and running basic analyses
+#********************************************************
+
+# In[1]: Introduction to the Dataset
+import pandas as pd
+births = open('/Users/justincampbell/Library/Mobile Documents/com~apple~CloudDocs/Code/Dataquest/Data/US_births_1994-2003_CDC_NCHS.csv').read().split('\n')
+births[0:10]
+
+# In[2]: Converting Data Into a List of Lists
+def read_csv(filename):
+    strData = open(filename).read()
+    strList = strData.split('\n')[1:]
+    finalList = []
+
+    for ss in strList:
+        intFields = []
+        strFields = ss.split(',')
+        for val in strFields:
+            intFields.append(int(val))
+        finalList.append(intFields)
+
+    return finalList
+
+cdc_list = read_csv('/Users/justincampbell/Library/Mobile Documents/com~apple~CloudDocs/Code/Dataquest/Data/US_births_1994-2003_CDC_NCHS.csv')
+cdc_list[0:10]
+
+# In[3]: Calculating Number of Births Each Month
+def month_births(ll):
+    birthsPerMonth = {}
+    for l in ll:
+        month = l[1]
+        births = l[4]
+        if month in birthsPerMonth:
+            birthsPerMonth[month] += births
+        else:
+            birthsPerMonth[month] = births
+
+    return birthsPerMonth
+
+cdcMonthBirths = month_births(cdc_list)
+cdcMonthBirths
+
+# In[4]: Calculating Number of Births Each Day of Week
+def dow_births(ll):
+    birthsPerDow = {}
+    for l in ll:
+        dow = l[3]
+        births = l[4]
+        if dow in birthsPerDow:
+            birthsPerDow[dow] += births
+        else:
+            birthsPerDow[dow] = births
+
+    return birthsPerDow
+
+cdcDowBirths = dow_births(cdc_list)
+cdcDowBirths
+
+# In[5]: Creating a More General Function
+def calc_counts(ll, colIndex):
+    colCounts = {}
+    for l in ll:
+        col = l[colIndex]
+        births = l[4]
+        if col in colCounts:
+            colCounts[col] += births
+        else:
+            colCounts[col] = births
+
+    return colCounts
+
+cdcYearBirths = calc_counts(cdc_list, 0)
+cdcMonthBirths = calc_counts(cdc_list, 1)
+cdcDomBirths = calc_counts(cdc_list, 2)
+cdcDowBirths = calc_counts(cdc_list, 3)
+      
